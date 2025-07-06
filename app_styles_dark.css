@@ -1,0 +1,856 @@
+header {
+    background-color: #1a1a2e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space between items */
+    padding: 10px;
+    position: fixed; /* Fix the header to the top */
+    top: 0; /* Position it at the top */
+    left: 0; /* Align to the left */
+    right: 0; /* Align to the right */
+    z-index: 1000; /* Ensure it stays above other content */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Added shadow for depth */
+}
+
+#origin {
+    fill: #ffffff;
+}
+
+circle {
+    fill: #0f0f1a;
+    color: #ffffff;
+}
+
+.collapseCircle {
+    fill: #ff6600;
+}
+
+text {
+    fill: #ffffff;
+}
+
+rect {
+    fill: #0f0f1a;
+    color: #ffffff;
+}
+
+polygon {
+    fill: #0f0f1a;
+    color: #ffffff;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #1a1a2e;
+    color: #ffffff;
+}
+
+svg {
+    background-color: #0f0f1a;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #1a1a2e;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
+}
+
+footer div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+input {
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+input:disabled {
+    background-color: #cccccc; /* Light gray background */
+    color: #666666; /* Darker gray text */
+    cursor: not-allowed; /* Change cursor to indicate it's not clickable */
+    opacity: 0.6; /* Slightly transparent */
+    pointer-events: none; /* Prevent any mouse events */
+}
+
+button {
+    padding: 10px;
+    margin: 10px;
+    background-color: #00ff88;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #1a1a2e;
+}
+
+button img {
+    margin: 0px;
+}
+
+button:hover {
+    background-color: #00cc99;
+}
+
+button:disabled {
+    background-color: #cccccc; /* Light gray background */
+    color: #666666; /* Darker gray text */
+    cursor: not-allowed; /* Change cursor to indicate it's not clickable */
+    opacity: 0.6; /* Slightly transparent */
+    pointer-events: none; /* Prevent any mouse events */
+}
+
+select {
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+select:hover {
+    background-color: #00ff88;
+}
+
+/*     *//*     *//*     *//*     *//*     */
+@media (max-width: 600px) {
+  footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  footer > div {
+    flex: none;
+    width: 90%;
+    margin: 10px 0;
+  }
+}
+
+#mindmap-container {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 50px);
+    overflow: hidden;
+}
+
+.colorInput{
+    height: 30px;
+    padding: 0px;
+    cursor: pointer;
+}
+
+#circle-input{
+    width: 100%;
+}
+
+#line-input{
+    width: 100%;
+}
+
+/*     *//*     *//*     *//*     *//*     */
+.reun-do button{
+    margin: 5px;
+}
+
+#snaptogridButton {
+    color: white;
+    background-color: #ff4d4d;
+}
+
+#snaptogridButton:hover {
+    background-color: #f00;
+}
+
+#snaptogridButton.on {
+    color: #1a1a2e;
+    background-color: #00ff88;
+}
+
+#snaptogridButton.on:hover {
+    background-color: #00cc99;
+}
+
+#delete-circle {
+    background-color: #ff4d4d;
+}
+
+#delete-circle:hover {
+    background-color: #f00;
+}
+
+#delete-circle:disabled {
+    background-color: #b33636;
+}
+
+#autoButton {
+    color: white;
+    background-color: #ff4d4d;
+}
+
+#autoButton:hover {
+    background-color: #f00;
+}
+
+#autoButton.on {
+    color: #1a1a2e;
+    background-color: #00ff88;
+}
+
+#autoButton.on:hover {
+    background-color: #00cc99;
+}
+
+#collapsButton {
+    color: white;
+    background-color: #ff4d4d;
+}
+
+#collapsButton:disabled {
+    color: white;
+    background-color: #b33636;
+}
+
+#collapsButton:hover {
+    background-color: #f00;
+}
+
+#collapsButton.on {
+    color: #1a1a2e;
+    background-color: #00ff88;
+}
+
+#collapsButton.on:hover {
+    background-color: #00cc99;
+}
+
+#fixed-axis-x {
+    color: white;
+    background-color: #ff4d4d;
+}
+
+#fixed-axis-x:hover {
+    background-color: #f00;
+}
+
+#fixed-axis-x.on {
+    color: #1a1a2e;
+    background-color: #00ff88;
+}
+
+#fixed-axis-x.on:hover {
+    background-color: #00cc99;
+}
+
+#fixed-axis-y {
+    color: white;
+    background-color: #ff4d4d;
+}
+
+#fixed-axis-y:hover {
+    background-color: #f00;
+}
+
+#fixed-axis-y.on {
+    color: #1a1a2e;
+    background-color: #00ff88;
+}
+
+#fixed-axis-y.on:hover {
+    background-color: #00cc99;
+}
+
+/*     *//*     *//*     *//*     *//*     */
+#description-window {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    display: none; /* Initially hidden */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it appears above other content */
+}
+
+#description-window.open {
+    display: block;
+}
+
+#close-description {
+    background-color: #ff4d4d;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#close-description:hover {
+    background-color: #f00;
+}
+
+#description {
+    resize: none;
+    width: 90%;
+    height: 60%;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #1a1a2e;
+    color: #ffffff;
+}
+
+.description-toolbar {
+    background: #1a1a2e;
+    border-radius: 8px;
+    padding: 10px 12px;
+    box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
+    margin: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 90%;
+}
+
+.description-toolbar button[aria-pressed="true"] {
+    background-color: #00ff00;
+    color: black;
+}
+
+#save-description {
+    background-color: #00ff88;
+    border: none;
+    color: #1a1a2e;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+#save-description:hover {
+    background-color: #00cc99;
+}
+
+#description-foreColor{
+    height: 30px;
+    padding: 0px;
+    cursor: pointer;
+}
+
+#description-backColor{
+    height: 30px;
+    padding: 0px;
+    cursor: pointer;
+}
+
+/*     *//*     *//*     *//*     *//*     */
+
+#shortcuts-map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none; /* Initially hidden */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it appears above other content */
+}
+
+#shortcuts-map.open {
+    display: block;
+}
+
+#close-shortcuts-map {
+    position: fixed;
+    background-color: #ff4d4d;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#shortcuts-container{
+    padding: 10%;
+    background-color: #1a1a2e;
+}
+
+#shortcut-btn {
+    position: fixed;
+    left: 50px;
+}
+
+#shortcut-btn button{
+    height: 45px;
+    font-size: 24px;
+}
+
+.shortcut {
+    align-items: center;
+    padding: 20px 50px 20px 50px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.shortcut label{
+    font-size: 20px;
+}
+
+.shortcut select{
+    font-size: 20px;
+}
+/*     *//*     *//*     *//*     *//*     */
+
+input[type="file"] {
+    display: none; /* Hide the input */
+}
+
+.divider {
+    height: 50px;
+}
+/*     *//*     *//*     *//*     *//*     */
+
+#menu-sidebar {
+    
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none; /* Initially hidden */
+    width: 200px;
+    height: 100%;
+    background-color: #0f0f1a;
+    color: white;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.menu-sidebar-title{
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space between items */
+}
+
+#menu-sidebar button {
+    font-weight: bold;
+    text-align: left;
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0px 0px 0px;
+    background-color: #00ff88;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #1a1a2e;
+}
+
+#menu-sidebar button:hover {
+    background-color: #00cc99;
+}
+
+.menu-sidebar-title #close-menu {
+    width: auto;
+    height: auto;
+    background-color: #ff4d4d;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.menu-sidebar-title #close-menu:hover {
+    background-color: #f00;
+}
+
+#menu-sidebar.open {
+    display: inline; /* Initially hidden */
+}
+
+#main-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100%;
+    background-color: #0f0f1a;
+    color: white;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    z-index: 0; /* Ensure it appears above other elements */
+}
+
+#main-sidebar button {
+    font-weight: bold;
+    text-align: left;
+    width: 100%;
+    padding: 10px;
+    margin: 15px 0px 0px 0px;
+    background-color: #00ff88;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #1a1a2e;
+}
+
+#main-sidebar button:hover {
+    background-color: #00cc99;
+}
+
+/*     *//*     *//*     *//*     *//*     */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.dropdown button {
+    align-items: flex-start;
+    font-weight: bold;
+    text-align: left;
+    width: 100%;
+    padding: 10px;
+    background-color: #00ff88;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #1a1a2e;
+}
+
+.dropdown button:hover {
+    background-color: #00cc99;
+}
+
+.dropdown-content {
+    position: absolute;
+    top: 0;
+    left: 110%;
+    padding: 10px;
+    background-color: #1a1a2e;
+    min-width: 200px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+    overflow: visible;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-10px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-content.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+/*     *//*     *//*     *//*     *//*     */
+#history-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: none; /* Initially hidden */
+    width: 300px;
+    height: 100%;
+    background-color: #0f0f1a;
+    color: white;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.history-sidebar-title{
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space between items */
+}
+
+.history-sidebar-title button {
+    background-color: #ff4d4d;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.history-sidebar-title button:hover {
+    background-color: #f00;
+}
+
+#history-sidebar.open {
+    display: inline; /* Initially hidden */
+}
+
+#history-list {
+    list-style-type: none;
+    padding: 0;
+    overflow-y: auto;
+    max-height: 80%; 
+}
+
+#history-list li {
+    padding: 10px;
+    margin: 10px;
+    background-color: #00ff88;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #1a1a2e;
+}
+
+#history-list li:hover {
+    background-color: #00cc99;
+}
+
+/*     *//*     *//*     *//*     *//*     */
+#subtool-sidebar {
+    position: fixed;
+    top: 70px;
+    right: 0;
+    width: 40px;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    display: none; /* Initially hidden */
+    padding: 20px;
+}
+#subtool-sidebar button{
+    margin: 10px 10px 0 10px;
+}
+/*     *//*     *//*     *//*     *//*     */
+
+#presentation-sidebar {
+    position: fixed;
+    top: 0;
+    display: none; /* Initially hidden */
+    right: 0;
+    width: 30%;
+    height: 100%;
+    background-color: #0f0f1a;
+    color: white;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.presentation-sidebar-title{
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space between items */
+}
+
+.presentation-sidebar-title button {
+    background-color: #ff4d4d;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.presentation-sidebar-title button:hover {
+    background-color: #f00;
+}
+
+#presentation-sidebar.open {
+    display: inline; /* Initially hidden */
+}
+
+#presentation-mode-btn {
+    color: white;
+    background-color: #ff4d4d;
+}
+
+#presentation-mode-btn:hover {
+    background-color: #f00;
+}
+
+#presentation-mode-btn.on {
+    color: #1a1a2e;
+    background-color: #00ff88;
+}
+
+#presentation-mode-btn.on:hover {
+    background-color: #00cc99;
+}
+
+/*     *//*     *//*     *//*     *//*     */
+#tasklist-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: none; /* Initially hidden */
+    width: 300px;
+    height: 100%;
+    background-color: #0f0f1a;
+    color: white;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.tasklist-sidebar-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space between items */
+}
+
+.tasklist-sidebar-title button {
+    background-color: #ff4d4d;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.tasklist-sidebar-title button:hover {
+    background-color: #f00;
+}
+
+#tasklist-sidebar.open {
+    display: inline; /* Show when open */
+}
+
+#tasklist-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;  /* Enable vertical scrolling */
+    overflow-x: hidden;  /* Hide horizontal overflow */
+    max-height: 70%; 
+    width: 95%;
+}
+
+#tasklist-list form {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+#tasklist-list li {
+    width: 100%; /* Set to 100% of the container */
+    max-width: 90%; /* Set a maximum width */
+    padding: 10px;
+    position: relative;
+    min-height: 50px;
+    height: auto;
+    margin: 10px 0; /* Vertical margin for spacing */
+    background-color: #00ff88; /* Background color for tasks */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #1a1a2e;
+    display: flex;
+    align-items: center; /* Center items vertically */
+    overflow: hidden; /* Hide overflow */
+}
+
+#tasklist-list li .task-content {
+    flex: 1; /* Allow the content to take available space */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    white-space: nowrap; /* Prevent text wrapping */
+    padding-right: 10px; /* Space for the button */
+}
+
+#tasklist-list li .task-button-container {
+    display: flex;
+    align-items: center; /* Center buttons vertically */
+    gap: 0.5rem; /* Space between the checkbox and delete button */
+}
+
+#tasklist-list li .check-btn {
+    cursor: pointer; /* Change cursor for checkbox */
+}
+
+#tasklist-list li.dragging {
+    opacity: 0.5; /* Make dragging item semi-transparent */
+}
+
+#tasklist-list li.completed {
+    background: #c6f6d5; /* Light green background for completed tasks */
+    text-decoration: line-through; /* Strikethrough text for completed tasks */
+    color: #4a5568; /* Darker text color for better contrast */
+}
+
+#tasklist-list button.delete-btn {
+    border: none;
+    background: #ff4d4d;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#tasklist-list button.delete-btn:hover {
+    background: #f00; /* Darker red on hover */
+}
+
+
+/*     *//*     *//*     *//*     *//*     */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background: #000; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: #00ff88; 
+}
+
+/*     *//*     *//*     *//*     *//*     */
+.tooltiptext {
+    visibility: hidden;
+    background-color: black;
+    color: #aaa;
+    font-size: 13px;
+    text-align: center;
+    border-radius: 5px;
+    padding: 6px 10px;
+    white-space: nowrap;
+    position: absolute;
+    z-index: 10;
+    bottom: 125%; /* Position the tooltip above the button */
+    left: 50%;
+    margin-left: -60px; /* Center the tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+    transform: translateX(-10%);
+}
+
+header .tooltiptext{
+    bottom: -50%;
+}
+
+.sidebar .tooltiptext{
+    bottom: 90%;
+    left: -50%;
+}
+
+button:hover .tooltiptext{
+    visibility: visible;
+    opacity: 1;
+}
+
+.inputTooltip:hover .tooltiptext{
+    visibility: visible;
+    opacity: 1;
+}
+

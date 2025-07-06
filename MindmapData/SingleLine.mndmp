@@ -1,0 +1,122 @@
+{
+  "circles": [
+    {
+      "id": "circle-1748275271168",
+      "type":"circle",
+      "text": "a",
+      "fontsize": "20px",
+      "x": 0,
+      "y": 0,
+      "size": "70",
+      "color": "#00ff88",
+      "description": "",
+      "isCollapsed": false,
+      "parent": null
+    },
+    {
+      "id": "circle-1748275275553",
+      "type":"circle",
+      "text": "b",
+      "fontsize": "20px",
+      "x": 200,
+      "y": 0,
+      "size": "60",
+      "color": "#00ffcc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275271168"
+    },
+    {
+      "id": "circle-1748275290065",
+      "type":"circle",
+      "text": "c",
+      "fontsize": "20px",
+      "x": 400,
+      "y": 0,
+      "size": "55",
+      "color": "#00cccc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275275553"
+    },
+    {
+      "id": "circle-1748275309311",
+      "type":"circle",
+      "text": "d",
+      "fontsize": "15px",
+      "x": 600,
+      "y": 0,
+      "size": "50",
+      "color": "#0099cc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275290065"
+    },
+    {
+      "id": "circle-1748275324587",
+      "type":"circle",
+      "text": "e",
+      "fontsize": "15px",
+      "x": 800,
+      "y": 0,
+      "size": "45",
+      "color": "#0066cc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275309311"
+    },
+    {
+      "id": "circle-1748275338433",
+      "type":"circle",
+      "text": "f",
+      "fontsize": "10x",
+      "x": 1000,
+      "y": 0,
+      "size": "35",
+      "color": "#0033cc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275324587"
+    },
+    {
+      "id": "circle-1748275349232",
+      "type":"circle",
+      "text": "g",
+      "fontsize": "9px",
+      "x": 1200,
+      "y": 0,
+      "size": "30",
+      "color": "#5500cc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275338433"
+    }
+  ],
+  "connections": [
+    {
+      "circle1": "circle-1748275271168",
+      "circle2": "circle-1748275275553"
+    },
+    {
+      "circle1": "circle-1748275275553",
+      "circle2": "circle-1748275290065"
+    },
+    {
+      "circle1": "circle-1748275290065",
+      "circle2": "circle-1748275309311"
+    },
+    {
+      "circle1": "circle-1748275309311",
+      "circle2": "circle-1748275324587"
+    },
+    {
+      "circle1": "circle-1748275324587",
+      "circle2": "circle-1748275338433"
+    },
+    {
+      "circle1": "circle-1748275338433",
+      "circle2": "circle-1748275349232"
+    }
+  ],
+  "history": []
+}

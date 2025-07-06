@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindMap</title>
+    <link rel="stylesheet" href="app_styles_dark.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<header id="header">
+    <div>
+        <button onclick="toggleTheme()">
+            <span class="tooltiptext">theme</span>
+            <img id="themImg" src="MindmapData/MindmapLightMode.svg" alt="Icon"  width="20" height="20" />
+        </button>
+
+        <button id="back-btn" style="display:none;">
+            <span class="tooltiptext">Back to Main Page</span>
+            <img src="MindmapData/MindmapMenuBack.svg" alt="Icon"  width="20" height="20" />
+        </button>
+        <button id="menuButton">
+            <span class="tooltiptext">Menu</span>
+            <img src="MindmapData/MindmapMenu.svg" alt="Icon" width="20" height="20" />
+        </button>
+        <button id="presentation-mode-btn">
+            <span class="tooltiptext" id="presntationmodetooltip">Presentation Mode : OFF</span>
+            <img id="presentationImg" src="MindmapData/MindmapPresentationMode_off.svg" alt="Icon" width="20" height="20" />
+        </button>
+    </div>
+
+    <h3 id="mindmap-title">Untitled Mindmap</h3>
+    <div>
+        <button id="zoom-up-btn">
+            <span class="tooltiptext">Zoom In</span>
+            <img src="MindmapData/MindmapZoomIn.svg" alt="Icon" width="20" height="20" />
+        </button>
+        <button id="zoom-down-btn">
+            <span class="tooltiptext">Zoom Out</span>
+            <img src="MindmapData/MindmapZoomOut.svg" alt="Icon" width="20" height="20" />
+        </button>
+    </div>
+    <div>
+        <button id="snaptogridButton">
+            <img id="snaptogridImg" src="MindmapData/MindmapSnapToGrid_off.svg" alt="Icon"  width="20" height="20" />
+            <span class="tooltiptext" id="snaptogridtooltip">Snap To Grid : OFF</span>
+        </button>
+    </div>
+
+    <div class="reun-do">
+        <button id="fixed-axis-x">
+            <span class="tooltiptext" id="fixedaxisxtooltip">Fixed On Axis X: OFF</span>
+            <img id="fixedaxisxImg" src="MindmapData/MindmapFixedAxisX_off.svg" alt="Icon"  width="20" height="20" />
+        </button>
+        <button id="fixed-axis-y">
+            <span class="tooltiptext" id="fixedaxisytooltip">Fixed On Axis Y: OFF</span>
+            <img id="fixedaxisyImg" src="MindmapData/MindmapFixedAxisY_off.svg" alt="Icon"  width="20" height="20" />
+        </button>
+    </div>
+    
+    <div class="reun-do">
+        <button id="undo-history">
+            <span class="tooltiptext">undo</span>
+            <img src="MindmapData/MindmapUndo.svg" alt="Icon"  width="20" height="20" />
+        </button>
+        <button id="redo-history">
+            <span class="tooltiptext">redo</span>
+            <img src="MindmapData/MindmapRedo.svg" alt="Icon"  width="20" height="20" />
+        </button>
+    </div>
+    <input type="text" id="search" placeholder="Search" />
+    <button id="mini-presentation"  title="minimize" style="display: none;">
+        <img id="minipresentationImg" src="MindmapData/MindmapPresentaionMinimize.svg" alt="Icon"  width="20" height="20" />
+    </button></header>
+<body>
+    <div id="presentation-sidebar">
+        <div class="presentation-sidebar-title">
+            <h3 id="presentation-sidebar-title-text"></h3>
+        </div>
+        <div id="presentation-sidebar-text">
+    
+        </div>
+    </div>
+
+    <div id="mindmap-container">
+        <svg id="mindmap" width="100%" height="100%" >
+            <circle id="origin" cx="0" cy="0" r="2" fill="#fff" />
+        </svg>
+    </div>
+
+    <div id="menu-sidebar" class="menu">
+        <div class="menu-sidebar-title">
+            <h3>MindMap</h3>
+            <button id="close-menu" ><img src="MindmapData/MindmapClose.svg" alt="Icon" width="20" height="20"  /></button>
+        </div>
+        <div class="dropdown">
+            <button class="dropdown-button" aria-haspopup="true" aria-expanded="false">New Mindmap
+                <img src="MindmapData/MindmapDropmenu.svg" alt="Icon" width="20" height="20" />
+            </button>
+            <div class="dropdown-content" role="menu" aria-label="Dropdown menu">
+                <button id="new-mindmap"><img src="MindmapData/MindmapMenuNewEmptyMindmap.svg" alt="Icon"  width="20" height="20" />
+                    Empty Mindmap
+                </button>
+                <button id="template1">Template: Single line</button>
+                <button id="template2">Template: Tree</button>
+                <button id="template3">Templat: Snowflake</button>
+            </div>
+        </div>
+        <button id="upload-btn">
+                <img src="MindmapData/MindmapMenuLoadMindmap.svg" alt="Icon"  width="20" height="20" />
+            Load Mindmap</button>
+        <input type="file" id="load-json" accept=".mndmp" />
+        <button id="save-json">
+                <img src="MindmapData/MindmapMenuSaveAsJson.svg" alt="Icon"  width="20" height="20" />
+            Save Mindmap</button>
+        <button id="save-svg">
+                <img src="MindmapData/MindmapMenuSaveAsSVG.svg" alt="Icon"  width="20" height="20" />
+            Save as SVG</button>
+        <button id="save-png">
+                <img src="MindmapData/MindmapMenuSaveAsPNG.svg" alt="Icon"  width="20" height="20" />
+            Save as PNG</button>
+        <button id="save-pdf">
+                <img src="MindmapData/MindmapMenuSaveAsPDF.svg" alt="Icon"  width="20" height="20" />
+            Save as PDF</button>
+        <button id="toggle-sidebar">
+                <img src="MindmapData/MindmapMenuOpenHistory.svg" alt="Icon"  width="20" height="20" />
+            Open History</button>
+        <button id="save-history">
+                <img src="MindmapData/MindmapMenuSaveHistory.svg" alt="Icon"  width="20" height="20" />
+            Save History</button>
+        <button id="clear-history">
+                <img src="MindmapData/MindmapMenuClearHistory.svg" alt="Icon"  width="20" height="20" />
+            Clear History</button>
+        <button id="toggle-tasklist-sidebar">
+                <img src="MindmapData/MindmapMenuTasks.svg" alt="Icon"  width="20" height="20" />
+            Open Tasks</button>
+        <button id="shortcuts">
+                <img src="MindmapData/MindmapMenuShortcuts.svg" alt="Icon"  width="20" height="20" />
+            Shortcuts</button>
+    </div>
+
+    <div id="history-sidebar" class="sidebar">
+        <div class="history-sidebar-title">
+            <h3>History</h3>
+            <button id="close-history"  title="Close">
+                <img src="MindmapData/MindmapClose.svg" alt="Icon"  width="20" height="20" />
+            </button>
+        </div>
+        <ul id="history-list"></ul>
+    </div>
+
+    <div id="tasklist-sidebar" class="sidebar">
+        <div class="tasklist-sidebar-title">
+            <h3>Todo Tasks</h3>
+            <button id="close-tasklist"  title="Close">
+                <img src="MindmapData/MindmapClose.svg" alt="Icon"  width="20" height="20" />
+            </button>
+        </div>
+        <form id="tasklist-form" aria-label="Add new Task">
+            <input type="text" id="tasklist-input" placeholder="Add New Task" required autocomplete="off" />
+            <button type="submit" class="add-btn"><img src="MindmapData/MindmapMenuTasksAdd.svg" alt="Icon"  width="20" height="20" />
+            </button>
+        </form>
+        <ul id="tasklist-list" aria-label="Draggable list"></ul>
+    </div>
+
+    <div id="description-window">
+        <div>
+            <button id="close-description" title="Close">
+                <img src="MindmapData/MindmapClose.svg" alt="Icon" width="20" height="20" />
+            </button>
+            <button id="save-description" title="Save">
+                <img src="MindmapData/MindmapSave.svg" alt="Icon" width="20" height="20" />
+            </button>
+        </div>
+
+        <div class="description-toolbar" role="toolbar" aria-label="Text styling options">
+            <select id="description-fontName" title="Font Family"></select>
+            <select id="description-fontSize" title="Font Size">
+                  <option value="1">10px</option>
+                  <option value="2">13px</option>
+                  <option value="3" selected>16px</option>
+                  <option value="4">18px</option>
+                  <option value="5">24px</option>
+                  <option value="6">32px</option>
+                  <option value="7">48px</option>
+            </select>
+            <button type="button" id="description-boldBtn" title="Bold" aria-pressed="false"><b>B</b></button>
+            <button type="button" id="description-italicBtn" title="Italic" aria-pressed="false"><i>I</i></button>
+            <button type="button" id="description-underlineBtn" title="Underline" aria-pressed="false"><u>U</u></button>
+            <button type="button" id="description-strikeBtn" title="Strikethrough" aria-pressed="false"><s>S</s></button>
+            <input type="color" id="description-foreColor" title="Text Color" value="#ffffff" />
+            <input type="color" id="description-backColor" title="Highlight Color" value="#ffffff" />
+            <button type="button" id="description-alignLeftBtn" title="Align Left" aria-pressed="false">
+                <img src="MindmapData/Mindmapformat_align_left.svg" alt="Icon"  width="15" height="15" />
+            </button>
+            <button type="button" id="description-alignCenterBtn" title="Align Center" aria-pressed="false">
+                <img src="MindmapData/Mindmapformat_align_center.svg" alt="Icon"  width="15" height="15" />
+            </button>
+            <button type="button" id="description-alignRightBtn" title="Align Right" aria-pressed="false">
+                <img src="MindmapData/Mindmapformat_align_right.svg" alt="Icon"  width="15" height="15" />
+            </button>
+            <button type="button" id="description-alignJustifyBtn" title="Justify" aria-pressed="false">
+                <img src="MindmapData/Mindmapformat_align_full.svg" alt="Icon"  width="15" height="15" />
+            </button>
+            <button type="button" id="description-undoBtn" title="Undo" aria-pressed="false">
+                <img src="MindmapData/MindmapUndo.svg" alt="Icon"  width="15" height="15" />
+            </button>
+            <button type="button" id="description-redoBtn" title="Redo" aria-pressed="false">
+                <img src="MindmapData/MindmapRedo.svg" alt="Icon"  width="15" height="15" />
+            </button>
+        </div>
+
+        <div id="description" contenteditable="true" role="textbox" aria-multiline="true"
+        spellcheck="true" aria-label="Rich text editor. Use toolbar buttons to style text.">
+        </div>  
+    </div>
+
+    <div id="shortcuts-map">
+        <button id="close-shortcuts-map" title="Close">
+            <img src="MindmapData/MindmapClose.svg" alt="Icon"  width="20" height="20" />
+        </button>
+        <div id="shortcut-btn">
+            <button id="reset-shortcuts-map" class="reset-button" onclick="resetShortcuts()">Reset to Default</button>
+        
+            <button id="save-shortcuts-button" class="reset-button">save</button>
+            <button id="load-shortcuts-button" class="reset-button">load</button>
+        </div>
+        
+        <div id="shortcuts-container">
+            <div class="divider"></div>
+            <div class="shortcut">
+                <label for="shortcut-1">OPEN/CLOSE Main Menu: TAB</label>
+                <div><select id="modifier-1"></select>
+                <select id="key-1" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-47">OPEN/CLOSE Presentaion Mode: Ctrl + G</label>
+                <div><select id="modifier-47"></select>
+                <select id="key-47" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-48">Min/Maximize Presentaion SideBar: Ctrl + B</label>
+                <div><select id="modifier-48"></select>
+                <select id="key-48" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label>Zoom Mouse Wheel or:</label>
+                <label for="shortcut-45">Zoom In: Ctrl + 4</label>
+                <div><select id="modifier-45"></select>
+                <select id="key-45" onchange="checkShorcuts(this.id)"></select></div>
+                <label for="shortcut-46">Zoom Out: Ctrl + 5</label>
+                <div><select id="modifier-46"></select>
+                <select id="key-46" onchange="checkShorcuts(this.id)"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-34">ON/OFF Snap To Grid: Ctrl + D</label>
+                <div><select id="modifier-34"></select>
+                <select id="key-34" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-35">ON/OFF Fixed On Axis X: Shift + T</label>
+                <div><select id="modifier-35"></select>
+                <select id="key-35" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-36">ON/OFF Fixed On Axis Y: Alt + T</label>
+                <div><select id="modifier-36"></select>
+                <select id="key-36" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-37">Undo: Ctrl + Z</label>
+                <div><select id="modifier-37"></select>
+                <select id="key-37" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-38">Redo: Ctrl + Y</label>
+                <div><select id="modifier-38"></select>
+                <select id="key-38" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-13">Search: Shift + E</label>
+                <div><select id="modifier-13"></select>
+                <select id="key-13" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="divider"></div>
+            <div class="shortcut">
+                <label for="shortcut-2">New Empty Mindmap: Ctrl + R</label>
+                <div><select id="modifier-2"></select>
+                <select id="key-2" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-3">Load Mindmap: Alt + W</label>
+                <div><select id="modifier-3"></select>
+                <select id="key-3" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-4">Save Mindmap: Shift + W</label>
+                <div><select id="modifier-4"></select>
+                <select id="key-4" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-5">Save As SVG: Shift + 1</label>
+                <div><select id="modifier-5"></select>
+                <select id="key-5" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-6">Save As PNG: Shift + 2</label>
+                <div><select id="modifier-6"></select>
+                <select id="key-6" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-7">Save As PDF: Shift + 3</label>
+                <div><select id="modifier-7"></select>
+                <select id="key-7" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-8">OPEN/CLOSE History: Shift + Q</label>
+                <div><select id="modifier-8"></select>
+                <select id="key-8" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-9">Save History: Ctrl + E</label>
+                <div><select id="modifier-9"></select>
+                <select id="key-9" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-10">Clear History: Ctrl + Q</label>
+                <div><select id="modifier-10"></select>
+                <select id="key-10" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-11">OPEN/CLOSE Todo Tasks: Shift + V</label>
+                <div><select id="modifier-11"></select>
+                <select id="key-11" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-12">OPEN/CLOSE Shortcuts map: Alt + `</label>
+                <div><select id="modifier-12"></select>
+                <select id="key-12" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="divider"></div>
+            <div class="shortcut">
+                <label for="shortcut-14">Use Node Type = Circle: Alt + 1</label>
+                <div><select id="modifier-14"></select>
+                <select id="key-14" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-15">Use Node Type = Reqtangle: Alt + 2</label>
+                <div><select id="modifier-15"></select>
+                <select id="key-15" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-16">Use Node Type = Triangle: Alt + 3</label>
+                <div><select id="modifier-16"></select>
+                <select id="key-16" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-17">Enter Node Title: Alt + A</label>
+                <div><select id="modifier-17"></select>
+                <select id="key-17" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-18">Use Connection Type = Solid: Alt + 4</label>
+                <div><select id="modifier-18"></select>
+                <select id="key-18" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-19">Use Connection Type = Dashed: Alt + 5</label>
+                <div><select id="modifier-19"></select>
+                <select id="key-19" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-20">Use Connection Type = Dotted: Alt + 6</label>
+                <div><select id="modifier-20"></select>
+                <select id="key-20" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-21">Enter Connection Label Text: Alt + V</label>
+                <div><select id="modifier-21"></select>
+                <select id="key-21" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-44">Enter Connection Color: shift + G</label>
+                <div><select id="modifier-44"></select>
+                <select id="key-44" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-22">ON/OFF Auto Node Styling: Ctrl + F</label>
+                <div><select id="modifier-22"></select>
+                <select id="key-22" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-23">Enter Node Size: shift + S</label>
+                <div><select id="modifier-23"></select>
+                <select id="key-23" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-24">Enter Node Title Font Size: shift + Z</label>
+                <div><select id="modifier-24"></select>
+                <select id="key-24" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-25">Enter Node Color: shift + R</label>
+                <div><select id="modifier-25"></select>
+                <select id="key-25"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-26">Enter Node X Position: Alt + X</label>
+                <div><select id="modifier-26"></select>
+                <select id="key-26" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-27">Enter Node Y Position: Alt + C</label>
+                <div><select id="modifier-27"></select>
+                <select id="key-27" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-28">Add Node To Mindmap: Shift + A</label>
+                <div><select id="modifier-28"></select>
+                <select id="key-28" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="divider"></div>
+            <div class="shortcut">
+                <label for="shortcut-32">Save Updates: Ctrl + S</label>
+                <div><select id="modifier-32"></select>
+                <select id="key-32" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-29">OPEN/CLOSE Description: Shift + D</label>
+                <div><select id="modifier-29"></select>
+                <select id="key-29" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-30">Save Discription: Shift + F</label>
+                <div><select id="modifier-30"></select>
+                <select id="key-30" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-31">Un/Colllaps: Shift + C</label>
+                <div><select id="modifier-31"></select>
+                <select id="key-31" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-33">Delete: Shift + X</label>
+                <div><select id="modifier-33"></select>
+                <select id="key-33" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-49">Connect Node (not parent-child connection): Alt + Z</label>
+                <div><select id="modifier-49"></select>
+                <select id="key-49" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-50">Connect Node (parent-child connection): Alt + S</label>
+                <div><select id="modifier-50"></select>
+                <select id="key-50" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-51">Calculate the Distance: Alt + D</label>
+                <div><select id="modifier-51"></select>
+                <select id="key-51" onchange="checkShorcuts()"></select></div>
+            </div>
+            <div class="divider"></div>
+            <div class="shortcut">
+                <label for="shortcut-39">Move Map Viewport: Mouse Button: Middle/Wheel</label>
+                <select id="modifier-39"></select>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-40">Select/Move: (Mouse Cursor On Node/Connection) Mouse Button: Left</label>
+                <select id="modifier-40"></select>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-41">DeSelect Node: (Mouse Cursor On Other Node/ Nothing) Mouse Button: Left</label>
+                <select id="modifier-41"></select>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-42">Select Multiple Nodes: Hold->Press: Shift</label>
+                <select id="modifier-42"></select>
+            </div>
+            <div class="shortcut">
+                <label for="shortcut-43">Go To Center: Ctrl + Shift</label>
+                <select id="modifier-43"></select>
+                <select id="key-43"></select>
+            </div>
+        </div>
+    </div>
+    
+    <div id="subtool-sidebar" class="sidebar">
+        <button id="update-circle" disabled>
+            <span class="tooltiptext">Save Changes</span>
+            <img src="MindmapData/MindmapSaveChanges.svg" alt="Icon"  width="20" height="20" />
+        </button>
+        <button id="open-description" disabled>
+            <span class="tooltiptext">Open Description</span>
+            <img src="MindmapData/MindmapDescription.svg" alt="Icon"  width="20" height="20" />
+        </button>
+        <button id="collapsButton" disabled>
+            <span class="tooltiptext" id="collapsetooltip">Collapse: OFF</span>
+            <img id="collapsImg" src="MindmapData/MindmapCollapse_off.svg" alt="Icon"  width="20" height="20" />
+        </button>
+        <button id="delete-circle" disabled>
+            <span class="tooltiptext">Delete</span>
+            <img src="MindmapData/MindmapDelete.svg" alt="Icon"  width="20" height="20" />
+        </button>
+        <button id="connect-circle" disabled>
+            <span class="tooltiptext">Double Connection</span>
+            <img src="MindmapData/MindmapNodeConnectionType_d.svg" alt="Icon"  width="20" height="20" />
+        </button>
+        <button id="connect-circle-p" disabled>
+            <span class="tooltiptext">Parent-Child Connection</span>
+            <img src="MindmapData/MindmapNodeConnectionType_p.svg" alt="Icon"  width="20" height="20" />
+        </button>
+        <button id="calculate-distance-btn">
+            <span class="tooltiptext">Calculate Distance</span>
+            <img src="MindmapData/MindmapCalculateDist.svg" alt="Icon"  width="20" height="20" />
+        </button>
+    </div>
+
+    <footer id="footer">
+        <div class="inputTooltip">
+            <select id="nodetypeinput" aria-label="Select visibility option">
+                <option value="circle" selected>Circle</option>
+                <option value="rectangle">Rectangle</option>
+                <option value="triangle">Triangle</option>
+            </select>
+            <span class="tooltiptext">Select Node Type</span>
+        </div>
+        
+        <div class="inputTooltip">
+            <input type="text" id="circle-input" placeholder="Node Title" />
+            <span class="tooltiptext">Enter Node Title</span>
+        </div>
+
+        <div class="inputTooltip">
+            <select id="linetypeinput" aria-label="Select visibility option">
+                <option value="solid" selected>Solid</option>
+                <option value="dashed">Dashed</option>
+                <option value="dotted">Dotted</option>
+            </select>
+            <span class="tooltiptext">Select Connection Type</span>
+        </div>
+        
+        <div class="inputTooltip">
+            <input type="text" id="line-input" placeholder="Connection Label" />
+            <span class="tooltiptext">Enter Connection Label Text</span>
+        </div>
+        <div class="inputTooltip">
+                <input type="color" class="colorInput" id="linecolorinput" value="#00ff00" />
+                <span class="tooltiptext">Connection Color</span>
+            </div>
+        <div>
+            <button id="autoButton">
+                <span class="tooltiptext" id="autotip">Auto Node Settings : OFF</span>
+                <img id="autoImg" src="MindmapData/MindmapAuto_off.svg" alt="Icon"  width="20" height="20" />
+            </button>
+            <div class="inputTooltip">
+                <input type="number" id="circle-size" style="width: 50px;" placeholder="Size" min=20 max=100 value=70 />
+                <span class="tooltiptext">Node Size</span>
+            </div>
+            <div class="inputTooltip">
+                <select id="text-size">
+                      <option value="10px">10px</option>
+                      <option value="13px">13px</option>
+                      <option value="16px">16px</option>
+                      <option value="18px">18px</option>
+                      <option value="24px" selected>24px</option>
+                      <option value="32px">32px</option>
+                      <option value="48px">48px</option>
+                </select>
+                <span class="tooltiptext">Font Size</span>
+            </div>
+            <div class="inputTooltip">
+                <input type="color" class="colorInput" id="circle-color" value="#00ff88" />
+                <span class="tooltiptext">Node Color</span>
+            </div>
+            <div class="inputTooltip">
+                <input type="text" id="node-x" style="width: 30px;" placeholder="Size" value=0 />
+                <span class="tooltiptext">Node X Position</span>
+            </div>
+             <div class="inputTooltip">
+                <input type="text" id="node-y" style="width: 30px;" placeholder="Size" value=0 />
+                <span class="tooltiptext">Node Y Position</span>
+            </div>
+        </div>
+
+        <button id="add-circle">
+            <span class="tooltiptext">Add Node</span>
+            <img src="MindmapData/MindmapAddNode.svg" alt="Icon"  width="20" height="20" />
+        </button>
+        <button id="add-comment">
+            <span class="tooltiptext">Add Comments</span>
+            <img src="MindmapData/MindmapAddComment.svg" alt="Icon"  width="20" height="20" />
+        </button>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
