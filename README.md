@@ -1,13 +1,10 @@
 # MindMap by SDevRami
-=====================================
 
 ## Overview
-------------
 
 The **MindMap** project is a tool kit web-based application designed to help users create, manage, and visualize mind maps. It provides a user-friendly interface with various features to enhance the mind mapping experience, including theme toggling, zooming, and exporting options.
 
 ## Table of Contents
------------------
 
 * [Features](#features)
 * [Technologies Used](#technologies-used)
@@ -18,7 +15,6 @@ The **MindMap** project is a tool kit web-based application designed to help use
 * [License](#license)
 
 ## Features
-------------
 
 * **Dynamic Mind Map Creation**: Users can create mind maps with various node types (circle, rectangle, triangle).
 * **Theme Toggle**: Switch between light and dark themes for better visibility.
@@ -29,7 +25,6 @@ The **MindMap** project is a tool kit web-based application designed to help use
 * **Shortcuts**: Utilize keyboard shortcuts for efficient navigation and actions.
 
 ## Technologies Used
---------------------
 
 * **HTML**: Structure of the web application.
 * **CSS**: Styling the application for a better user experience.
@@ -39,7 +34,6 @@ The **MindMap** project is a tool kit web-based application designed to help use
 	+ [jsPDF](https://github.com/parallax/jsPDF): For generating PDF files from the mind map.
 
 ## Installation
-------------
 
 you can try the app online :
 [link to Mindmap](https://sdevrami.github.io/Mindmap/).
@@ -61,7 +55,6 @@ python -m http.server 8000
 4. **Open your browser and navigate to http://localhost:8000.
 
 ## Usage
------
 
 * **Creating a Mind Map**: Click on the "New Mindmap" button in the menu to start a new mind map.
 * **Adding Nodes**: Use the input fields in the footer to add nodes and connections.
@@ -71,7 +64,6 @@ python -m http.server 8000
 * **Note**: This app work only on pc (need mouse), the mobile touch handler (and ui) on the next update.
 
 ## File Structure
-----------------
 
 ```
 mindmap/
@@ -84,11 +76,9 @@ mindmap/
 ```
 
 ## Contributing
-------------
 
 Contributions are welcome! If you have suggestions for improvements or new features, please fork the repository and submit a pull request.
 
 ## License
--------
 
 This project is licensed under the GNU General Public License (GPL). See the [LICENSE](LICENSE) file for details.
