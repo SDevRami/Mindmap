@@ -48,13 +48,17 @@ To set up the project locally, follow these steps:
 
 1. **Clone the repository**:
 ```bash
-git clone https://github.com/yourusername/mindmap.git
+git clone https://github.com/SDevRami/Mindmap.git
 ```
 2. **Navigate to the project directory**:
 ```bash
 cd mindmap
 ```
-3. **Open the `index.html` file in your web browser** to view the application.
+5. **Run this command**:
+```bash
+python -m http.server 8000
+```
+4. **Open your browser and navigate to http://localhost:8000.
 
 ## Usage
 -----
@@ -63,6 +67,8 @@ cd mindmap
 * **Adding Nodes**: Use the input fields in the footer to add nodes and connections.
 * **Exporting**: Use the export buttons in the menu to save your mind map in the desired format.
 * **Managing Tasks**: Open the task list sidebar to add and manage tasks related to your mind map.
+* **Shortcuts**: All the tools in the app have own shortcut and you can change it.
+* **Note**: This app work only on pc (need mouse), the mobile touch handler (and ui) on the next update.
 
 ## File Structure
 ----------------
