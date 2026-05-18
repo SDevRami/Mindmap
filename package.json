@@ -1,0 +1,11 @@
+{
+  "name": "mindmap-editor",
+  "version": "2.0.0",
+  "description": "SVG-based mindmap editor with export to JSON/SVG/PNG/PDF",
+  "scripts": {
+    "start": "npx serve . -l 3000 --cors"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

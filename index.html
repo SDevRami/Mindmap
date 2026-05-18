@@ -1,0 +1,86 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>MindMap v0.2</title>
+  <link rel="stylesheet" href="main_styles.css">
+</head>
+<body>
+  <aside>
+    <h1>MindMap v0.2</h1>
+    <a href="app.html?mindmap=empty">
+      <button>
+        <img src="MindmapData/MindmapMenuNewEmptyMindmap.svg" alt="Icon"  width="20" height="20" />
+        Empty Mindmap
+        </button>
+    </a>
+    <button id="dark-light-toggle" onclick="toggleThemeMode()">
+      <img id="dark-light-toggleImg" src="MindmapData/MindmapLightMode.svg" alt="Icon"  width="20" height="20" />
+      <span id="dark-light-toggle-text">Light</span>
+    </button>
+    <button id="load-local-btn">
+      <img src="MindmapData/MindmapMenuLoadMindmap.svg" alt="Icon" width="20" height="20" />
+      Load Local Mindmap
+    </button>
+    <input type="file" id="load-local-input" accept=".mndmp" style="display:none" />
+    <button id="export-all-btn">
+      <img src="MindmapData/MindmapSave.svg" alt="Icon" width="20" height="20" />
+      Export All Projects
+    </button>
+    <button id="import-all-btn">
+      <img src="MindmapData/MindmapMenuLoadMindmap.svg" alt="Icon" width="20" height="20" />
+      Import All Projects
+    </button>
+    <input type="file" id="import-all-input" accept=".mndmpindex" style="display:none" />
+    <button id="Clear-projects" onclick="clearProjects()">
+      <img src="MindmapData/MindmapMenuClearProjects.svg" alt="Icon"  width="20" height="20" />
+      Clear My Mindmap
+    </button>
+  </aside>
+  <main>
+    <section>
+      <h2>Template</h2>
+      <div class="template-grid" id="template-container">
+        <div class="template-card" tabindex="0" role="link" aria-label="Open Single Line mindmap" data-path="MindmapData/SingleLine.mndmp">
+          <img
+            alt="Template image showing a simple mountain icon on black background"
+            src="MindmapData/SingleLine.svg"
+            width="160"
+            height="100"
+          />
+          <div class="template-label">Single Line</div>
+        </div>
+        <div class="template-card" tabindex="0" role="link" aria-label="Open Tree mindmap" data-path="MindmapData/Tree.mndmp">
+          <img
+            alt="Template image showing a simple mountain icon on black background"
+            src="MindmapData/Tree.svg"
+            width="160"
+            height="100"
+          />
+          <div class="template-label">Tree</div>
+        </div>
+        <div class="template-card" tabindex="0" role="link" aria-label="Open SnowFlake mindmap" data-path="MindmapData/SnowFlake.mndmp">
+          <img
+            alt="Template image showing a simple mountain icon on black background"
+            src="MindmapData/SnowFlake.svg"
+            width="160"
+            height="100"
+          />
+          <div class="template-label">SnowFlake</div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <h2>My MindMaps</h2>
+      <div id="mindmaps-container" aria-label="My MindMaps container"></div>
+    </section>
+  </main>
+  <div id="shortcuts-map">
+        <button id="close-shortcuts-map" title="Close" onclick="showInfo()">
+            <img src="MindmapData/MindmapClose.svg" alt="Icon"  width="20" height="20" />
+        </button>
+        <img src="MindmapData/MindmapShortcutsMap.png" width="100%" >
+  </div>
+  <script src="main_script.js"></script>
+</body>
+</html>

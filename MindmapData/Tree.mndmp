@@ -1,0 +1,105 @@
+{
+  "circles": [
+    {
+      "id": "circle-1748275452611",
+      "type":"circle",
+      "text": "a",
+      "fontsize": "20px",
+      "x": 0,
+      "y": 0,
+      "size": "70",
+      "color": "#00ff88",
+      "description": "",
+      "isCollapsed": false,
+      "parent": null
+    },
+    {
+      "id": "circle-1748275459082",
+      "type":"circle",
+      "text": "b",
+      "fontsize": "20px",
+      "x": -200,
+      "y": 200,
+      "size": "60",
+      "color": "#00ffcc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275452611"
+    },
+    {
+      "id": "circle-1748275576354",
+      "type":"circle",
+      "text": "c",
+      "fontsize": "20px",
+      "x": 200,
+      "y": 200,
+      "size": "60",
+      "color": "#00ffcc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275452611"
+    },
+    {
+      "id": "circle-1748275604564",
+      "type":"circle",
+      "text": "d",
+      "fontsize": "20px",
+      "x": -400,
+      "y": 300,
+      "size": "55",
+      "color": "#00cccc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275459082"
+    },
+    {
+      "id": "circle-1748275641554",
+      "type":"circle",
+      "text": "e",
+      "fontsize": "20px",
+      "x": 0,
+      "y": 300,
+      "size": "55",
+      "color": "#00cccc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275459082"
+    },
+    {
+      "id": "circle-1748275662508",
+      "type":"circle",
+      "text": "f",
+      "fontsize": "20px",
+      "x": 400,
+      "y": 300,
+      "size": "55",
+      "color": "#00cccc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275576354"
+    }
+  ],
+  "connections": [
+    {
+      "circle1": "circle-1748275452611",
+      "circle2": "circle-1748275459082"
+    },
+    {
+      "circle1": "circle-1748275452611",
+      "circle2": "circle-1748275576354"
+    },
+    {
+      "circle1": "circle-1748275459082",
+      "circle2": "circle-1748275604564"
+    },
+    {
+      "circle1": "circle-1748275459082",
+      "circle2": "circle-1748275641554"
+    },
+    {
+      "circle1": "circle-1748275576354",
+      "circle2": "circle-1748275662508"
+    }
+  ],
+  "history": []
+}

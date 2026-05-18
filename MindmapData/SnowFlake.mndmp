@@ -1,0 +1,360 @@
+{
+  "circles": [
+    {
+      "id": "circle-1748275719959",
+      "type":"circle",
+      "text": "a",
+      "fontsize": "20px",
+      "x": 0,
+      "y": 0,
+      "size": "70",
+      "color": "#00ff88",
+      "description": "",
+      "isCollapsed": false,
+      "parent": null
+    },
+    {
+      "id": "circle-1748275738526",
+      "type":"circle",
+      "text": "b",
+      "fontsize": "20px",
+      "x": 200,
+      "y": 0,
+      "size": "60",
+      "color": "#00ffcc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275719959"
+    },
+    {
+      "id": "circle-1748275751357",
+      "type":"circle",
+      "text": "c",
+      "fontsize": "20px",
+      "x": 0,
+      "y": 200,
+      "size": "60",
+      "color": "#00ffcc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275719959"
+    },
+    {
+      "id": "circle-1748275761073",
+      "type":"circle",
+      "text": "d",
+      "fontsize": "20px",
+      "x": -200,
+      "y": 0,
+      "size": "60",
+      "color": "#00ffcc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275719959"
+    },
+    {
+      "id": "circle-1748275774084",
+      "type":"circle",
+      "text": "e",
+      "fontsize": "20px",
+      "x": 0,
+      "y": -200,
+      "size": "60",
+      "color": "#00ffcc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275719959"
+    },
+    {
+      "id": "circle-1748275793464",
+      "type":"circle",
+      "text": "f",
+      "fontsize": "20px",
+      "x": 400,
+      "y": 0,
+      "size": "55",
+      "color": "#00cccc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275738526"
+    },
+    {
+      "id": "circle-1748275854929",
+      "type":"circle",
+      "text": "g",
+      "fontsize": "20px",
+      "x": 0,
+      "y": 400,
+      "size": "55",
+      "color": "#00cccc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275751357"
+    },
+    {
+      "id": "circle-1748275871891",
+      "type":"circle",
+      "text": "h",
+      "fontsize": "20px",
+      "x": -400,
+      "y": 0,
+      "size": "55",
+      "color": "#00cccc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275761073"
+    },
+    {
+      "id": "circle-1748275881610",
+      "type":"circle",
+      "text": "i",
+      "fontsize": "20px",
+      "x": 0,
+      "y": -400,
+      "size": "55",
+      "color": "#00cccc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275774084"
+    },
+    {
+      "id": "circle-1748275925521",
+      "type":"circle",
+      "text": "j",
+      "fontsize": "15px",
+      "x": 400,
+      "y": -200,
+      "size": "50",
+      "color": "#0099cc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275793464"
+    },
+    {
+      "id": "circle-1748275950752",
+      "type":"circle",
+      "text": "k",
+      "fontsize": "15px",
+      "x": 400,
+      "y": 200,
+      "size": "50",
+      "color": "#0099cc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275793464"
+    },
+    {
+      "id": "circle-1748275958585",
+      "type":"circle",
+      "text": "l",
+      "fontsize": "15px",
+      "x": 200,
+      "y": 400,
+      "size": "50",
+      "color": "#0099cc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275854929"
+    },
+    {
+      "id": "circle-1748275969925",
+      "type":"circle",
+      "text": "m",
+      "fontsize": "15px",
+      "x": -200,
+      "y": 400,
+      "size": "50",
+      "color": "#0099cc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275854929"
+    },
+    {
+      "id": "circle-1748275977584",
+      "type":"circle",
+      "text": "n",
+      "fontsize": "15px",
+      "x": -400,
+      "y": 200,
+      "size": "50",
+      "color": "#0099cc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275871891"
+    },
+    {
+      "id": "circle-1748275988865",
+      "type":"circle",
+      "text": "o",
+      "fontsize": "15px",
+      "x": -400,
+      "y": -200,
+      "size": "50",
+      "color": "#0099cc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275871891"
+    },
+    {
+      "id": "circle-1748275999644",
+      "type":"circle",
+      "text": "p",
+      "fontsize": "15px",
+      "x": -200,
+      "y": -400,
+      "size": "50",
+      "color": "#0099cc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275881610"
+    },
+    {
+      "id": "circle-1748276007627",
+      "type":"circle",
+      "text": "q",
+      "fontsize": "15px",
+      "x": 200,
+      "y": -400,
+      "size": "50",
+      "color": "#0099cc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275881610"
+    },
+    {
+      "id": "circle-1748276015724",
+      "type":"circle",
+      "text": "r",
+      "fontsize": "15px",
+      "x": 600,
+      "y": 0,
+      "size": "50",
+      "color": "#0099cc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275793464"
+    },
+    {
+      "id": "circle-1748276026447",
+      "type":"circle",
+      "text": "s",
+      "fontsize": "15px",
+      "x": 0,
+      "y": 600,
+      "size": "50",
+      "color": "#0099cc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275854929"
+    },
+    {
+      "id": "circle-1748276048036",
+      "type":"circle",
+      "text": "t",
+      "fontsize": "15px",
+      "x": -600,
+      "y": 0,
+      "size": "50",
+      "color": "#0099cc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275871891"
+    },
+    {
+      "id": "circle-1748276056424",
+      "type":"circle",
+      "text": "u",
+      "fontsize": "15px",
+      "x": 0,
+      "y": -600,
+      "size": "50",
+      "color": "#0099cc",
+      "description": "",
+      "isCollapsed": false,
+      "parent": "circle-1748275881610"
+    }
+  ],
+  "connections": [
+    {
+      "circle1": "circle-1748275719959",
+      "circle2": "circle-1748275738526"
+    },
+    {
+      "circle1": "circle-1748275719959",
+      "circle2": "circle-1748275751357"
+    },
+    {
+      "circle1": "circle-1748275719959",
+      "circle2": "circle-1748275761073"
+    },
+    {
+      "circle1": "circle-1748275719959",
+      "circle2": "circle-1748275774084"
+    },
+    {
+      "circle1": "circle-1748275738526",
+      "circle2": "circle-1748275793464"
+    },
+    {
+      "circle1": "circle-1748275751357",
+      "circle2": "circle-1748275854929"
+    },
+    {
+      "circle1": "circle-1748275761073",
+      "circle2": "circle-1748275871891"
+    },
+    {
+      "circle1": "circle-1748275774084",
+      "circle2": "circle-1748275881610"
+    },
+    {
+      "circle1": "circle-1748275793464",
+      "circle2": "circle-1748275925521"
+    },
+    {
+      "circle1": "circle-1748275793464",
+      "circle2": "circle-1748275950752"
+    },
+    {
+      "circle1": "circle-1748275854929",
+      "circle2": "circle-1748275958585"
+    },
+    {
+      "circle1": "circle-1748275854929",
+      "circle2": "circle-1748275969925"
+    },
+    {
+      "circle1": "circle-1748275871891",
+      "circle2": "circle-1748275977584"
+    },
+    {
+      "circle1": "circle-1748275871891",
+      "circle2": "circle-1748275988865"
+    },
+    {
+      "circle1": "circle-1748275881610",
+      "circle2": "circle-1748275999644"
+    },
+    {
+      "circle1": "circle-1748275881610",
+      "circle2": "circle-1748276007627"
+    },
+    {
+      "circle1": "circle-1748275793464",
+      "circle2": "circle-1748276015724"
+    },
+    {
+      "circle1": "circle-1748275854929",
+      "circle2": "circle-1748276026447"
+    },
+    {
+      "circle1": "circle-1748275871891",
+      "circle2": "circle-1748276048036"
+    },
+    {
+      "circle1": "circle-1748275881610",
+      "circle2": "circle-1748276056424"
+    }
+  ],
+  "history": []
+}
