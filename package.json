@@ -1,7 +1,7 @@
 {
   "name": "mindmap-editor",
-  "version": "2.0.0",
-  "description": "SVG-based mindmap editor with export to JSON/SVG/PNG/PDF",
+  "version": "2.1.0",
+  "description": "SVG-based mind map editor with node styling, connections, comments, tasks, rich text, undo/redo, and export to JSON/SVG/PNG/PDF/Markdown",
   "scripts": {
     "start": "npx serve . -l 3000 --cors"
   },

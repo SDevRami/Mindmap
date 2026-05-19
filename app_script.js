@@ -11,7 +11,7 @@ const sidebar_list = document.getElementById('history-list');
 const tasksidebar = document.getElementById('tasklist-sidebar');
 const tasksidebar_list = document.getElementById('tasklist-list');
 const shortcutsMap = document.getElementById('shortcuts-map');
-const dropdownContent = document.querySelector('.dropdown-content');
+// dropdown removed, items now direct buttons
 const mindmapContainer = document.getElementById('mindmap-container');
 const footer = document.getElementById('footer');
 const header = document.getElementById('header');
@@ -53,7 +53,6 @@ const autoButton = document.getElementById('autoButton');
 const closeShortcutMapButton = document.getElementById('close-shortcuts-map');
 const undoHistoryButton = document.getElementById('undo-history');
 const redoHistoryButton = document.getElementById('redo-history');
-const dropdownButton = document.querySelector('.dropdown-button');
 const temp1Button = document.getElementById('template1');
 const temp2Button = document.getElementById('template2');
 const temp3Button = document.getElementById('template3');
@@ -146,6 +145,7 @@ let svgBackgroundColorT = "#ffffff";
 //---------------------
 let comments = [];
 let selectedComment = null;
+let commentIdCounter = 0;
 
 // Safe localStorage wrappers with error handling and quota management
 function safeGetItem(key, fallback = null) {
@@ -568,18 +568,8 @@ const addEventListeners = () => {
         }
     });
 
-    dropdownButton.addEventListener('click', () => {
-      const showing = dropdownContent.classList.toggle('show');
-      dropdownButton.setAttribute('aria-expanded', showing);
-    });
-
-    // Close dropdown if clicking outside
     window.addEventListener('click', (e) => {
-      if (!e.target.closest('.dropdown')) {
-        dropdownContent.classList.remove('show');
-        dropdownButton.setAttribute('aria-expanded', 'false');
-      }
-      if (selectedComment && !e.target.closest('#comment-window') && !e.target.closest('#add-comment') && !e.target.closest('.comment')) {
+      if (selectedComment && !e.target.closest('#comment-window') && !e.target.closest('#add-comment') && !e.target.closest('#delete-comment') && !e.target.closest('.comment-card')) {
         deselectComment();
       }
     });
@@ -602,9 +592,18 @@ const addEventListeners = () => {
     closeDescriptionButton.addEventListener('click', closeDescription);
     saveDescriptionButton.addEventListener('click', saveDescription);
     //  --------------------------
-    addCommentButton.addEventListener('click', openComment);
+    addCommentButton.addEventListener('click', () => {
+        if (selectedComment) {
+            deselectComment();
+        }
+        commentNickname.value = '';
+        commentText.value = '';
+        document.getElementById('delete-comment').style.display = 'none';
+        commentWindow.classList.add('open');
+    });
     closeCommentButton.addEventListener('click', closeComment);
     saveCommentButton.addEventListener('click', saveComment);
+    document.getElementById('delete-comment').addEventListener('click', deleteComment);
 
     addCircleButton.addEventListener('click', addCircle);
     updateCircleButton.addEventListener('click', updateCircle);
@@ -1041,6 +1040,12 @@ const addEventListeners = () => {
             }
         }
     });
+
+    document.getElementById('bold-btn').addEventListener('click', toggleBold);
+    document.getElementById('italic-btn').addEventListener('click', toggleItalic);
+    document.getElementById('stats-btn').addEventListener('click', showStats);
+    document.getElementById('close-stats-modal').addEventListener('click', () => document.getElementById('stats-modal').style.display = 'none');
+    document.getElementById('export-markdown-btn').addEventListener('click', exportAsMarkdown);
 };
 
 // Button State Management
@@ -1058,6 +1063,88 @@ const updateButtons = () => {
 function showInfo() {
     shortcutsMap.classList.toggle('open');
 };
+
+// --- Adaptive Footer Toolbar ---
+function updateFooterToolbar() {
+    const nodeSection = document.getElementById('footer-section-node');
+    const connSection = document.getElementById('footer-section-connection');
+    const nodeProps = document.getElementById('footer-node-props');
+    if (selectedLine) {
+        nodeSection.style.display = 'none';
+        connSection.style.display = 'flex';
+    } else {
+        nodeSection.style.display = 'flex';
+        nodeProps.style.display = 'flex';
+        connSection.style.display = 'none';
+    }
+}
+
+// --- Bold / Italic Toggle ---
+function toggleBold() {
+    if (!selectedCircle[0]) return;
+    const circleObj = circles.find(c => c.group === selectedCircleDic[selectedCircle[0]]);
+    if (!circleObj) return;
+    circleObj.isBold = !circleObj.isBold;
+    circleObj.text.setAttribute('font-weight', circleObj.isBold ? 'bold' : 'normal');
+    document.getElementById('bold-btn').style.background = circleObj.isBold ? '#00cc99' : '';
+    saveHistory('Toggle Bold');
+}
+
+function toggleItalic() {
+    if (!selectedCircle[0]) return;
+    const circleObj = circles.find(c => c.group === selectedCircleDic[selectedCircle[0]]);
+    if (!circleObj) return;
+    circleObj.isItalic = !circleObj.isItalic;
+    circleObj.text.setAttribute('font-style', circleObj.isItalic ? 'italic' : 'normal');
+    document.getElementById('italic-btn').style.background = circleObj.isItalic ? '#00cc99' : '';
+    saveHistory('Toggle Italic');
+}
+
+// --- Statistics ---
+function showStats() {
+    const totalNodes = circles.length;
+    const totalConnections = lines.length;
+    const totalComments = comments.length;
+    const totalTasks = tasklistitems.length;
+    let depth = 0;
+    function calcDepth(node, d) {
+        depth = Math.max(depth, d);
+        circles.filter(c => c.parent === node).forEach(child => calcDepth(child, d + 1));
+    }
+    circles.filter(c => !c.parent).forEach(root => calcDepth(root, 1));
+    const body = document.getElementById('stats-body');
+    body.innerHTML = `
+        <div><strong>Nodes:</strong> ${totalNodes}</div>
+        <div><strong>Connections:</strong> ${totalConnections}</div>
+        <div><strong>Tree Depth:</strong> ${depth}</div>
+        <div><strong>Comments:</strong> ${totalComments}</div>
+        <div><strong>Tasks:</strong> ${totalTasks}</div>
+    `;
+    document.getElementById('stats-modal').style.display = 'flex';
+}
+
+// --- Markdown Export ---
+function exportAsMarkdown() {
+    let md = `# ${mindmaptitle.innerText}\n\n`;
+    function buildMd(node, level) {
+        const indent = '  '.repeat(level);
+        md += `${indent}- ${node.text.textContent}\n`;
+        const children = circles.filter(c => c.parent && c.parent.id === node.id);
+        children.forEach(child => buildMd(child, level + 1));
+    }
+    const roots = circles.filter(c => !c.parent);
+    if (roots.length === 0) {
+        md += '*No nodes*\n';
+    } else {
+        roots.forEach(root => buildMd(root, 0));
+    }
+    const blob = new Blob([md], { type: 'text/markdown' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = (mindmaptitle.innerText || 'mindmap') + '.md';
+    link.click();
+    URL.revokeObjectURL(link.href);
+}
 
 // new mindmap / clear all data
 const newMindmap = () => {
@@ -1708,83 +1795,182 @@ const saveDescription = () => {
     }
 };
 
-// Function to open the Comment --------------------------
-const openComment = () => {
-    commentWindow.classList.toggle('open');
-    if (selectedComment) {
-        commentNickname.value = selectedComment.nickname;
-        commentText.value = selectedComment.text;
-    } else {
-        commentNickname.value = '';
-        commentText.value = '';
-    }
-};
+// --- Comment System ---
 
-// Function to close the Comment --------------------------
 const closeComment = () => {
     commentWindow.classList.remove('open');
 };
 
-// Function to save the Comment --------------------------
+function truncate(str, max) {
+    if (!str) return '';
+    return str.length > max ? str.slice(0, max) + '...' : str;
+}
+
+function getFirstWords(str, count) {
+    if (!str) return '';
+    const words = str.trim().split(/\s+/);
+    const preview = words.slice(0, count).join(' ');
+    if (words.length > count) return preview + '...';
+    return preview;
+}
+
+function createCommentSvg(commentObj) {
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.setAttribute('transform', `translate(${commentObj.x}, ${commentObj.y})`);
+    g.setAttribute('class', 'comment-card');
+
+    const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    bg.setAttribute('width', '160');
+    bg.setAttribute('height', '50');
+    bg.setAttribute('rx', '8');
+    bg.setAttribute('ry', '8');
+    bg.setAttribute('class', 'comment-bg');
+    g.appendChild(bg);
+
+    const img = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+    img.setAttribute('href', 'MindmapData/MindmapCommentIcon.svg');
+    img.setAttribute('width', '22');
+    img.setAttribute('height', '22');
+    img.setAttribute('x', '8');
+    img.setAttribute('y', '14');
+    g.appendChild(img);
+
+    const nameText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    nameText.setAttribute('x', '38');
+    nameText.setAttribute('y', '20');
+    nameText.setAttribute('font-size', '11');
+    nameText.setAttribute('class', 'comment-name');
+    nameText.textContent = truncate(commentObj.nickname || 'Anonymous', 14);
+    g.appendChild(nameText);
+
+    const previewText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    previewText.setAttribute('x', '38');
+    previewText.setAttribute('y', '36');
+    previewText.setAttribute('font-size', '10');
+    previewText.setAttribute('class', 'comment-preview');
+    previewText.textContent = getFirstWords(commentObj.text, 4);
+    g.appendChild(previewText);
+
+    g.addEventListener('mousedown', (e) => {
+        if (e.button !== 0) return;
+        e.stopPropagation();
+        if (selectedCircle[0]) deselectCircle();
+        if (selectedLine) {
+            selectedLine.line.setAttribute('stroke-width', 4);
+            if (selectedLine.lineC) {
+                selectedLine.line.setAttribute('stroke-width', 2);
+                selectedLine.lineC.setAttribute('stroke-width', 2);
+            }
+            selectedLine = null;
+        }
+        startCommentDrag(e, commentObj);
+    });
+
+    g.addEventListener('dblclick', (e) => {
+        e.stopPropagation();
+        selectComment(commentObj);
+    });
+
+    commentObj.svgGroup = g;
+    comments.push(commentObj);
+    svg.appendChild(g);
+}
+
 const saveComment = () => {
+    const nickname = commentNickname.value.trim();
+    const text = commentText.value.trim();
     if (!selectedComment) {
-        // Create a group element to hold the rectangle and image
-        const comment = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-
-        // Create button element
-        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-        rect.setAttribute('width', '25');
-        rect.setAttribute('height', '25');
-        rect.setAttribute('fill', '#00ff88');
-        rect.setAttribute('class', 'comment');
-        rect.setAttribute('rx', '5');
-        // Create image element
-        const img = document.createElementNS('http://www.w3.org/2000/svg', 'image');
-        img.setAttribute('href', 'MindmapData/MindmapCommentIcon.svg');
-        img.setAttribute('width', '25');
-        img.setAttribute('height', '25');
-        img.setAttribute('x', '0');
-        img.setAttribute('y', '0');
-        
-        // Add elements to the group
-        comment.appendChild(rect);
-        comment.appendChild(img);
-        comment.setAttribute('x', 0);
-        comment.setAttribute('y', 0);
-        
-        // Add draggable functionality
-
-        //comment.addEventListener('click', startDrag);
-        const nickname = commentNickname.value;
-        const text = commentText.value;
-        comment.addEventListener('click', e => {
-            const modifier40 = document.getElementById('modifier-40').value;
-            if (e.button === Number(modifier40)) {
-                    e.preventDefault();
-                    selectComment(e,comment, nickname, text);
-                }
-        });
-
-        comments.push({comment, nickname, text})
-        svg.appendChild(comment);
-    
+        const newComment = {
+            id: ++commentIdCounter,
+            nickname: nickname || 'Anonymous',
+            text: text || '',
+            x: 0,
+            y: 0,
+        };
+        createCommentSvg(newComment);
     } else {
-        savedComment = comments.find(c => c.comment === selectedComment.comment)
-        savedComment.nickname = commentNickname.value;
-        savedComment.text = commentText.value;
+        selectedComment.nickname = nickname || 'Anonymous';
+        selectedComment.text = text || '';
+        updateCommentSvg(selectedComment);
     }
     closeComment();
 };
 
-//function to select comment icon --------------------------
-const selectComment = (e, comment, nickname, text) => {
-    selectedComment = {comment, nickname, text};
-    openComment();
+function updateCommentSvg(commentObj) {
+    const g = commentObj.svgGroup;
+    if (!g) return;
+    const nameText = g.querySelector('.comment-name');
+    if (nameText) nameText.textContent = truncate(commentObj.nickname || 'Anonymous', 14);
+    const previewText = g.querySelector('.comment-preview');
+    if (previewText) previewText.textContent = getFirstWords(commentObj.text, 4);
+}
+
+const selectComment = (commentObj) => {
+    if (selectedComment) {
+        selectedComment.svgGroup.classList.remove('selected');
+    }
+    selectedComment = commentObj;
+    selectedComment.svgGroup.classList.add('selected');
+    commentNickname.value = commentObj.nickname;
+    commentText.value = commentObj.text;
+    document.getElementById('delete-comment').style.display = '';
+    commentWindow.classList.add('open');
 };
-//function to deselect Comment --------------------------
+
 const deselectComment = () => {
-    closeComment();
+    if (selectedComment) {
+        selectedComment.svgGroup.classList.remove('selected');
+    }
+    commentWindow.classList.remove('open');
     selectedComment = null;
+};
+
+const deleteComment = () => {
+    if (!selectedComment) return;
+    if (selectedComment.svgGroup && selectedComment.svgGroup.parentNode) {
+        svg.removeChild(selectedComment.svgGroup);
+    }
+    const idx = comments.indexOf(selectedComment);
+    if (idx !== -1) comments.splice(idx, 1);
+    deselectComment();
+};
+
+// --- Comment Drag ---
+
+let commentDragData = null;
+
+const startCommentDrag = (e, commentObj) => {
+    e.stopPropagation();
+    const CTM = svg.getScreenCTM();
+    const mousePos = getMousePosition(e, CTM);
+    commentDragData = {
+        comment: commentObj,
+        offsetX: mousePos.x - commentObj.x,
+        offsetY: mousePos.y - commentObj.y,
+    };
+    svg.addEventListener('mousemove', commentDrag);
+    svg.addEventListener('mouseup', endCommentDrag);
+};
+
+const commentDrag = (e) => {
+    if (!commentDragData) return;
+    const CTM = svg.getScreenCTM();
+    const mousePos = getMousePosition(e, CTM);
+    let newX = mousePos.x - commentDragData.offsetX;
+    let newY = mousePos.y - commentDragData.offsetY;
+    if (snaptogrid) {
+        newX = Math.round(newX / gridSize) * gridSize;
+        newY = Math.round(newY / gridSize) * gridSize;
+    }
+    commentDragData.comment.x = newX;
+    commentDragData.comment.y = newY;
+    commentDragData.comment.svgGroup.setAttribute('transform', `translate(${newX}, ${newY})`);
+};
+
+const endCommentDrag = () => {
+    svg.removeEventListener('mousemove', commentDrag);
+    svg.removeEventListener('mouseup', endCommentDrag);
+    commentDragData = null;
 };
 
 
@@ -1889,8 +2075,10 @@ const selectCircle = (e, group, id) => {
     }
     presentationSidebarTitleText.textContent = `Node : ${circleObj.text.textContent}`;
     presentationSidebarText.textContent = `Description : ${circleObj.description}`;
-    // Update button states
+    document.getElementById('bold-btn').style.background = circleObj.isBold ? '#00cc99' : '';
+    document.getElementById('italic-btn').style.background = circleObj.isItalic ? '#00cc99' : '';
     updateButtons();
+    updateFooterToolbar();
     startDrag(e);
 };
 
@@ -1950,6 +2138,7 @@ const deselectCircle = () => {
         updateCircleButton.disabled = true;
         subtoolSidebar.style.display = 'none';
     }
+    updateFooterToolbar();
 };
 
 // add new circle
@@ -2023,6 +2212,7 @@ const selectLine = (line) => {
     subtoolSidebar.style.display = 'inline';
     updateCircleButton.disabled = false;
     deleteCircleButton.disabled = false;
+    updateFooterToolbar();
 };
 
 // draw connection line
@@ -2256,7 +2446,7 @@ const updateCircle = () => {
                 selectedCircleDic[selectedCircle[0]].querySelector('rect').style.display = 'none';
                 selectedCircleDic[selectedCircle[0]].querySelector('polygon').style.display = 'block';
             }
-            newCircleType.value = 'circle';
+            circleObj.type = newCircleType;
             console.log(`Updated circle type to: ${newCircleType}`);
             saveHistory(`Updated circle type to: ${newCircleType}`);
         }
@@ -2726,14 +2916,19 @@ function autoSaveToLocalStorage() {
             fontsize: circle.text.getAttribute('font-size'),
             x: circle.x, y: circle.y, size: circle.circle.getAttribute('r'),
             color: circle.circle.getAttribute('stroke'), description: circle.description,
-            isCollapsed: circle.isCollapsed, parent: circle.parent ? circle.parent.id : null
+            isCollapsed: circle.isCollapsed,
+            isBold: circle.isBold || false, isItalic: circle.isItalic || false,
+            parent: circle.parent ? circle.parent.id : null
         })),
         connections: lines.map(line => ({
             circle1: line.circle1.id, circle2: line.circle2.id,
             label: line.label.textContent, type: line.type,
             color: line.color, connectiontype: line.connectionType
         })),
-        history: history, tasks: tasklistitems
+        history: history, tasks: tasklistitems,
+        comments: comments.map(c => ({
+            id: c.id, nickname: c.nickname, text: c.text, x: c.x, y: c.y
+        })),
     };
     // Only save if we have actual data
     if (circles.length > 0 || lines.length > 0) {
@@ -2781,6 +2976,8 @@ const saveHistory = (vname = 'time') => {
             color: circle.circle.getAttribute('stroke'),
             description: circle.description,
             isCollapsed: circle.isCollapsed,
+            isBold: circle.isBold || false,
+            isItalic: circle.isItalic || false,
             parent: circle.parent ? circle.parent.id : null
         })),
         connections: lines.map(line => ({
@@ -2790,7 +2987,11 @@ const saveHistory = (vname = 'time') => {
             type: line.type,
             color: line.color,
             connectiontype: line.connectionType,
-        }))
+        })),
+        tasks: tasklistitems.map(t => ({ ...t })),
+        comments: comments.map(c => ({
+            id: c.id, nickname: c.nickname, text: c.text, x: c.x, y: c.y
+        })),
     };
     // Save to local storage
     if (currentIndex < history.length - 1) {
@@ -2845,6 +3046,10 @@ const loadMindMapFromHistory = (index) => {
         currentIndex = index;
         clearSVG();
         buildMindMapFromData(mindMapData);
+        if (mindMapData.tasks) {
+            tasklistitems = mindMapData.tasks.map(t => ({ ...t }));
+            renderList();
+        }
         restoreCollapsedStates();
         mindmaptitle.innerText = mindmaptitle.innerText.replace('*', '');
         mindmaptitle.innerText += '*';
@@ -2856,8 +3061,11 @@ function clearSVG() {
     lines.forEach(line => { if (line.line && line.line.parentNode) svg.removeChild(line.line); });
     lines.forEach(line => { if (line.hitline && line.hitline.parentNode) svg.removeChild(line.hitline); });
     lines.forEach(line => { if (line.label && line.label.parentNode) svg.removeChild(line.label); });
+    comments.forEach(c => { if (c.svgGroup && c.svgGroup.parentNode) svg.removeChild(c.svgGroup); });
     lines = [];
     circles = [];
+    comments = [];
+    selectedComment = null;
     while (svg.children.length > 1) {
         svg.removeChild(svg.lastChild);
     }
@@ -2877,6 +3085,8 @@ function applyCircleStyle(circleObj, data) {
     let trianglePointB = `${Number(data.x)-Number(data.size)},${Number(data.y)+(Number(data.size)/2)*1.5}`;
     let trianglePointC = `${Number(data.x)+Number(data.size)},${Number(data.y)+(Number(data.size)/2)*1.5}`;
     circleObj.triangle.setAttribute("points", `${trianglePointA} ${trianglePointB} ${trianglePointC}`);
+    if (data.isBold) { circleObj.isBold = true; circleObj.text.setAttribute('font-weight', 'bold'); }
+    if (data.isItalic) { circleObj.isItalic = true; circleObj.text.setAttribute('font-style', 'italic'); }
 }
 
 function restoreCollapsedStates() {
@@ -2935,6 +3145,19 @@ function buildMindMapFromData(mindMapData) {
             console.error(`Connection error: ${connection.circle1} or ${connection.circle2} not found.`);
         }
     });
+    // Create comments
+    if (mindMapData.comments) {
+        mindMapData.comments.forEach(data => {
+            if (data.id > commentIdCounter) commentIdCounter = data.id;
+            createCommentSvg({
+                id: data.id,
+                nickname: data.nickname || '',
+                text: data.text || '',
+                x: data.x || 0,
+                y: data.y || 0,
+            });
+        });
+    }
 }
 
 // load template (from localStorage for saved projects, or fetch for built-in templates)
@@ -3078,6 +3301,8 @@ const saveAsJson = () => {
             color: circle.circle.getAttribute('stroke'),
             description: circle.description,
             isCollapsed: circle.isCollapsed,
+            isBold: circle.isBold || false,
+            isItalic: circle.isItalic || false,
             parent: circle.parent ? circle.parent.id : null // Use ID for parent
         })),
         connections: lines.map(line => ({
@@ -3090,6 +3315,13 @@ const saveAsJson = () => {
         })),
         history: history,
         tasks: tasklistitems,
+        comments: comments.map(c => ({
+            id: c.id,
+            nickname: c.nickname,
+            text: c.text,
+            x: c.x,
+            y: c.y,
+        })),
     };
 
     // Save full mindmap data to localStorage for "My MindMaps" gallery

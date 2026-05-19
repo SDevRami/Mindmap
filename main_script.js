@@ -24,6 +24,8 @@ function safeRemoveItem(key) { try { localStorage.removeItem(key); return true; 
 
 function applyThemeToElements() {
   const isLight = mode;
+  const searchInput = document.getElementById('search-mindmaps');
+  if (searchInput) searchInput.style.cssText = `width:100%;max-width:300px;padding:8px;border-radius:5px;border:none;background:${isLight ? '#f5f5ff' : '#222436'};color:${isLight ? '#000' : '#fff'};`;
   document.querySelectorAll('.mindmap-svg-wrapper').forEach(m => {
     m.style.backgroundColor = isLight ? 'white' : 'black';
     m.style.border = isLight ? "1px solid #f5f5ff" : "1px solid #222436";
@@ -33,8 +35,11 @@ function applyThemeToElements() {
     l.style.color = isLight ? '#000' : '#fff';
   });
   document.querySelectorAll('.card-actions button').forEach(b => {
-    const isDelete = b.textContent === 'Delete';
-    b.style.cssText = `font-size:11px;padding:3px 8px;margin:0;border:none;border-radius:3px;cursor:pointer;${isDelete ? 'background:#ff4d4d;color:#fff;' : (isLight ? 'background:#6bff7c;color:#000;' : 'background:#00ff88;color:#1a1a2e;')}`;
+    const action = b.getAttribute('data-action');
+    if (action === 'delete') { b.style.cssText = 'display:flex;align-items:center;justify-content:center;width:28px;height:28px;padding:0;margin:0;border:none;border-radius:4px;cursor:pointer;background:#ff4d4d;'; }
+    else if (action === 'download') { b.style.cssText = `display:flex;align-items:center;justify-content:center;width:28px;height:28px;padding:0;margin:0;border:none;border-radius:4px;cursor:pointer;${isLight ? 'background:#6bff7c;' : 'background:#00ff88;'}`; }
+    else if (action === 'rename') { b.style.cssText = 'display:flex;align-items:center;justify-content:center;width:28px;height:28px;padding:0;margin:0;border:none;border-radius:4px;cursor:pointer;background:#ffaa00;'; }
+    else if (action === 'duplicate') { b.style.cssText = 'display:flex;align-items:center;justify-content:center;width:28px;height:28px;padding:0;margin:0;border:none;border-radius:4px;cursor:pointer;background:#00aaff;'; }
   });
 }
 
@@ -60,26 +65,30 @@ function clearProjects() {
     loadMindMaps();
 };
 
-function loadMindMaps() {
+function loadMindMaps(filter) {
   const container = document.getElementById("mindmaps-container");
   try {
     const raw = safeGetItem('mindMapIndex');
-    const mindmaps = raw ? JSON.parse(raw) : null;
+    let mindmaps = raw ? JSON.parse(raw) : null;
     container.innerHTML = "";
     if (!mindmaps || mindmaps.length === 0) {
       container.innerHTML = '<p style="color:#888; font-size:0.85rem;">No saved mindmaps yet.</p>';
       return;
+    }
+    if (filter) {
+      const q = filter.toLowerCase();
+      mindmaps = mindmaps.filter(m => m.name.toLowerCase().includes(q));
     }
     mindmaps.forEach((map) => {
       const card = document.createElement("div");
       card.className = "mindmap-card";
 
       card.addEventListener("click", (e) => {
-        if (e.target.closest('.card-actions')) return;
+        if (e.target.closest('.card-actions') || e.target.closest('.mindmap-label')) return;
         window.location.href = `app.html?mindmap=${encodeURIComponent(map.path)}`;
       });
       card.addEventListener("keydown", (e) => {
-        if ((e.key === "Enter" || e.key === " ") && !e.target.closest('.card-actions')) {
+        if ((e.key === "Enter" || e.key === " ") && !e.target.closest('.card-actions') && !e.target.closest('.mindmap-label')) {
           e.preventDefault();
           window.location.href = `app.html?mindmap=${encodeURIComponent(map.path)}`;
         }
@@ -103,27 +112,91 @@ function loadMindMaps() {
       const label = document.createElement("div");
       label.className = "mindmap-label";
       label.textContent = map.name;
+      label.style.cursor = 'pointer';
+      label.title = 'Click to rename';
+      label.addEventListener('dblclick', function() {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = map.name;
+        input.style.cssText = 'font-size:0.75rem;padding:2px 4px;width:140px;border-radius:3px;border:1px solid #00ff88;background:#1a1a2e;color:#fff;';
+        label.textContent = '';
+        label.appendChild(input);
+        input.focus();
+        input.select();
+        const finishRename = () => {
+          const newName = input.value.trim();
+          if (newName && newName !== map.name) {
+            const oldData = safeGetItem('mindmap_' + map.name);
+            if (oldData) {
+              safeSetItem('mindmap_' + newName, oldData);
+              safeRemoveItem('mindmap_' + map.name);
+            }
+            map.name = newName;
+            map.path = 'export/' + newName + '.mndmp';
+            const rawIdx = safeGetItem('mindMapIndex');
+            const idx = rawIdx ? JSON.parse(rawIdx) : [];
+            const entry = idx.find(m => m.name === map.name);
+            if (entry) { entry.name = newName; entry.path = map.path; }
+            safeSetItem('mindMapIndex', JSON.stringify(idx));
+          }
+          loadMindMaps(document.getElementById('search-mindmaps').value);
+        };
+        input.addEventListener('blur', finishRename);
+        input.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); input.blur(); } });
+      });
 
       const actions = document.createElement("div");
       actions.className = "card-actions";
       actions.style.cssText = 'display:flex;gap:4px;margin-top:6px;';
 
-      const delBtn = document.createElement("button");
-      delBtn.textContent = 'Delete';
-      delBtn.style.cssText = 'font-size:11px;padding:3px 8px;margin:0;background:#ff4d4d;color:#fff;border:none;border-radius:3px;cursor:pointer;';
-      delBtn.addEventListener('click', (e) => {
+      const renameBtn = document.createElement("button");
+      renameBtn.setAttribute('data-action', 'rename');
+      renameBtn.title = 'Rename';
+      renameBtn.style.cssText = 'display:flex;align-items:center;justify-content:center;width:28px;height:28px;padding:0;margin:0;background:#ffaa00;border:none;border-radius:4px;cursor:pointer;';
+      const renameImg = document.createElement('img');
+      renameImg.src = 'MindmapData/MindmapPen.svg';
+      renameImg.alt = 'Rename';
+      renameImg.style.cssText = 'width:16px;height:16px;';
+      renameBtn.appendChild(renameImg);
+      renameBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        if (confirm('Delete "' + map.name + '"?')) {
-          safeRemoveItem('mindmap_' + map.name);
-          const updated = mindmaps.filter(m => m.name !== map.name);
-          safeSetItem('mindMapIndex', JSON.stringify(updated));
-          loadMindMaps();
+        label.dispatchEvent(new Event('dblclick'));
+      });
+
+      const dupBtn = document.createElement("button");
+      dupBtn.setAttribute('data-action', 'duplicate');
+      dupBtn.title = 'Duplicate';
+      dupBtn.style.cssText = 'display:flex;align-items:center;justify-content:center;width:28px;height:28px;padding:0;margin:0;background:#00aaff;border:none;border-radius:4px;cursor:pointer;';
+      const dupImg = document.createElement('img');
+      dupImg.src = 'MindmapData/MindmapCopy.svg';
+      dupImg.alt = 'Duplicate';
+      dupImg.style.cssText = 'width:16px;height:16px;';
+      dupBtn.appendChild(dupImg);
+      dupBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const copyName = 'Copy of ' + map.name;
+        const lsData = safeGetItem('mindmap_' + map.name);
+        if (lsData) {
+          safeSetItem('mindmap_' + copyName, lsData);
+          const rawIdx = safeGetItem('mindMapIndex');
+          const idx = rawIdx ? JSON.parse(rawIdx) : [];
+          if (!idx.find(m => m.name === copyName)) {
+            idx.push({ name: copyName, path: 'export/' + copyName + '.mndmp', thumbnail: map.thumbnail });
+            safeSetItem('mindMapIndex', JSON.stringify(idx));
+          }
+          loadMindMaps(document.getElementById('search-mindmaps').value);
         }
       });
 
       const dlBtn = document.createElement("button");
-      dlBtn.textContent = 'Download';
-      dlBtn.style.cssText = 'font-size:11px;padding:3px 8px;margin:0;background:#00ff88;color:#1a1a2e;border:none;border-radius:3px;cursor:pointer;';
+      dlBtn.setAttribute('data-action', 'download');
+      dlBtn.title = 'Download';
+      dlBtn.style.cssText = 'display:flex;align-items:center;justify-content:center;width:28px;height:28px;padding:0;margin:0;background:#00ff88;border:none;border-radius:4px;cursor:pointer;';
+      const dlImg = document.createElement('img');
+      dlImg.src = 'MindmapData/MindmapMenuSaveAsJson.svg';
+      dlImg.alt = 'Download';
+      dlImg.style.cssText = 'width:16px;height:16px;';
+      dlBtn.appendChild(dlImg);
       dlBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         const lsData = safeGetItem('mindmap_' + map.name);
@@ -137,6 +210,30 @@ function loadMindMaps() {
         }
       });
 
+      const delBtn = document.createElement("button");
+      delBtn.setAttribute('data-action', 'delete');
+      delBtn.title = 'Delete';
+      delBtn.style.cssText = 'display:flex;align-items:center;justify-content:center;width:28px;height:28px;padding:0;margin:0;background:#ff4d4d;border:none;border-radius:4px;cursor:pointer;';
+      const delImg = document.createElement('img');
+      delImg.src = 'MindmapData/MindmapDelete.svg';
+      delImg.alt = 'Delete';
+      delImg.style.cssText = 'width:16px;height:16px;';
+      delBtn.appendChild(delImg);
+      delBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (confirm('Delete "' + map.name + '"?')) {
+          safeRemoveItem('mindmap_' + map.name);
+          const updated = mindmaps.filter(m => m.name !== map.name);
+          const rawIdx = safeGetItem('mindMapIndex');
+          const idx = rawIdx ? JSON.parse(rawIdx) : [];
+          const finalIdx = idx.filter(m => m.name !== map.name);
+          safeSetItem('mindMapIndex', JSON.stringify(finalIdx));
+          loadMindMaps(document.getElementById('search-mindmaps').value);
+        }
+      });
+
+      actions.appendChild(renameBtn);
+      actions.appendChild(dupBtn);
       actions.appendChild(dlBtn);
       actions.appendChild(delBtn);
       card.appendChild(svgWrapper);
@@ -237,6 +334,10 @@ document.getElementById('load-local-input').addEventListener('change', function(
 document.getElementById('export-all-btn').addEventListener('click', exportAllProjects);
 document.getElementById('import-all-btn').addEventListener('click', () => document.getElementById('import-all-input').click());
 document.getElementById('import-all-input').addEventListener('change', function() { if (this.files[0]) importAllProjects(this.files[0]); this.value = ''; });
+
+document.getElementById('search-mindmaps').addEventListener('input', function() {
+  loadMindMaps(this.value);
+});
 
 loadMindMaps();
 setupTemplateCards();

@@ -230,3 +230,23 @@ h2 {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.card-actions button:hover {
+  opacity: 0.85;
+}
+.card-actions button[data-action="delete"]:hover {
+  background: #cc0000 !important;
+}
+.card-actions button[data-action="download"]:hover {
+  background: #00cc99 !important;
+}
+.card-actions button[data-action="rename"]:hover {
+  background: #dd8800 !important;
+}
+.card-actions button[data-action="duplicate"]:hover {
+  background: #0088cc !important;
+}
+#search-mindmaps:focus {
+  outline: 2px solid #00ff6a;
+  outline-offset: 1px;
+}

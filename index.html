@@ -3,8 +3,8 @@
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1" name="viewport" />
   <title>MindMap v0.2</title>
-  <link rel="stylesheet" href="main_styles.css">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="main_styles.css">
 </head>
 <body>
   <aside>
@@ -38,7 +38,10 @@
       Clear My Mindmap
     </button>
   </aside>
-  <main>
+    <main>
+    <section style="margin-bottom:1rem;">
+      <input type="text" id="search-mindmaps" placeholder="Search saved mindmaps..." style="width:100%;max-width:300px;padding:8px;border-radius:5px;border:none;" />
+    </section>
     <section>
       <h2>Template</h2>
       <div class="template-grid" id="template-container">

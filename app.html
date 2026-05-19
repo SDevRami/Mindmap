@@ -90,19 +90,18 @@
             <h3>MindMap</h3>
             <button id="close-menu" ><img src="MindmapData/MindmapClose.svg" alt="Icon" width="20" height="20"  /></button>
         </div>
-        <div class="dropdown">
-            <button class="dropdown-button" aria-haspopup="true" aria-expanded="false">New Mindmap
-                <img src="MindmapData/MindmapDropmenu.svg" alt="Icon" width="20" height="20" />
-            </button>
-            <div class="dropdown-content" role="menu" aria-label="Dropdown menu">
-                <button id="new-mindmap"><img src="MindmapData/MindmapMenuNewEmptyMindmap.svg" alt="Icon"  width="20" height="20" />
-                    Empty Mindmap
-                </button>
-                <button id="template1">Template: Single line</button>
-                <button id="template2">Template: Tree</button>
-                <button id="template3">Template: Snowflake</button>
-            </div>
-        </div>
+        <button id="new-mindmap"><img src="MindmapData/MindmapMenuNewEmptyMindmap.svg" alt="Icon"  width="20" height="20" />
+            Empty Mindmap
+        </button>
+        <button id="template1"><img src="MindmapData/MindmapMenuNewEmptyMindmap.svg" alt="Icon"  width="20" height="20" />
+            Template: Single line
+        </button>
+        <button id="template2"><img src="MindmapData/MindmapMenuNewEmptyMindmap.svg" alt="Icon"  width="20" height="20" />
+            Template: Tree
+        </button>
+        <button id="template3"><img src="MindmapData/MindmapMenuNewEmptyMindmap.svg" alt="Icon"  width="20" height="20" />
+            Template: Snowflake
+        </button>
         <button id="upload-btn">
                 <img src="MindmapData/MindmapMenuLoadMindmap.svg" alt="Icon"  width="20" height="20" />
             Load Mindmap</button>
@@ -122,6 +121,9 @@
         <button id="save-pdf">
                 <img src="MindmapData/MindmapMenuSaveAsPDF.svg" alt="Icon"  width="20" height="20" />
             Save as PDF</button>
+        <button id="export-markdown-btn">
+                <img src="MindmapData/MindmapMenuSaveAsJson.svg" alt="Icon"  width="20" height="20" />
+            Export as Markdown</button>
         <button id="toggle-sidebar">
                 <img src="MindmapData/MindmapMenuOpenHistory.svg" alt="Icon"  width="20" height="20" />
             Open History</button>
@@ -134,6 +136,9 @@
         <button id="toggle-tasklist-sidebar">
                 <img src="MindmapData/MindmapMenuTasks.svg" alt="Icon"  width="20" height="20" />
             Open Tasks</button>
+        <button id="stats-btn">
+                <img src="MindmapData/MindmapCalculateDist.svg" alt="Icon"  width="20" height="20" />
+            Statistics</button>
         <button id="shortcuts">
                 <img src="MindmapData/MindmapMenuShortcuts.svg" alt="Icon"  width="20" height="20" />
             Shortcuts</button>
@@ -223,6 +228,9 @@
             </button>
             <button id="save-comment" title="save">
                 <img src="MindmapData/MindmapSave.svg" alt="Icon" width="20" height="20" />
+            </button>
+            <button id="delete-comment" title="Delete">
+                <img src="MindmapData/MindmapDelete.svg" alt="Icon" width="20" height="20" />
             </button>
         </div>
         
@@ -533,81 +541,95 @@
     </div>
 
     <footer id="footer">
-        <div class="inputTooltip">
-            <select id="nodetypeinput" aria-label="Select visibility option">
-                <option value="circle" selected>Circle</option>
-                <option value="rectangle">Rectangle</option>
-                <option value="triangle">Triangle</option>
-            </select>
-            <span class="tooltiptext">Select Node Type</span>
-        </div>
-        
-        <div class="inputTooltip">
-            <input type="text" id="circle-input" placeholder="Node Title" />
-            <span class="tooltiptext">Enter Node Title</span>
-        </div>
-
-        <div class="inputTooltip">
-            <select id="linetypeinput" aria-label="Select visibility option">
-                <option value="solid" selected>Solid</option>
-                <option value="dashed">Dashed</option>
-                <option value="dotted">Dotted</option>
-            </select>
-            <span class="tooltiptext">Select Connection Type</span>
-        </div>
-        
-        <div class="inputTooltip">
-            <input type="text" id="line-input" placeholder="Connection Label" />
-            <span class="tooltiptext">Enter Connection Label Text</span>
-        </div>
-        <div class="inputTooltip">
-                <input type="color" class="colorInput" id="linecolorinput" value="#00ff00" />
-                <span class="tooltiptext">Connection Color</span>
-            </div>
-        <div>
-            <button id="autoButton">
-                <span class="tooltiptext" id="autotip">Auto Node Settings : OFF</span>
-                <img id="autoImg" src="MindmapData/MindmapAuto_off.svg" alt="Icon"  width="20" height="20" />
-            </button>
+        <div id="footer-section-node" class="footer-section">
             <div class="inputTooltip">
-                <input type="number" id="circle-size" style="width: 50px;" placeholder="Size" min=20 max=100 value=70 />
-                <span class="tooltiptext">Node Size</span>
-            </div>
-            <div class="inputTooltip">
-                <select id="text-size">
-                      <option value="10px">10px</option>
-                      <option value="13px">13px</option>
-                      <option value="16px">16px</option>
-                      <option value="18px">18px</option>
-                      <option value="24px" selected>24px</option>
-                      <option value="32px">32px</option>
-                      <option value="48px">48px</option>
+                <select id="nodetypeinput" aria-label="Select visibility option">
+                    <option value="circle" selected>Circle</option>
+                    <option value="rectangle">Rectangle</option>
+                    <option value="triangle">Triangle</option>
                 </select>
-                <span class="tooltiptext">Font Size</span>
+                <span class="tooltiptext">Select Node Type</span>
             </div>
             <div class="inputTooltip">
-                <input type="color" class="colorInput" id="circle-color" value="#00ff88" />
-                <span class="tooltiptext">Node Color</span>
+                <input type="text" id="circle-input" placeholder="Node Title" />
+                <span class="tooltiptext">Enter Node Title</span>
             </div>
-            <div class="inputTooltip">
-                <input type="text" id="node-x" style="width: 30px;" placeholder="Size" value=0 />
-                <span class="tooltiptext">Node X Position</span>
-            </div>
-             <div class="inputTooltip">
-                <input type="text" id="node-y" style="width: 30px;" placeholder="Size" value=0 />
-                <span class="tooltiptext">Node Y Position</span>
+            <div id="footer-node-props" class="footer-subsection">
+                <button id="bold-btn" title="Bold" style="font-weight:bold;width:30px;height:30px;padding:0;">B</button>
+                <button id="italic-btn" title="Italic" style="font-style:italic;width:30px;height:30px;padding:0;">I</button>
+                <button id="autoButton">
+                    <span class="tooltiptext" id="autotip">Auto Node Settings : OFF</span>
+                    <img id="autoImg" src="MindmapData/MindmapAuto_off.svg" alt="Icon"  width="20" height="20" />
+                </button>
+                <div class="inputTooltip">
+                    <input type="number" id="circle-size" style="width: 50px;" placeholder="Size" min=20 max=100 value=70 />
+                    <span class="tooltiptext">Node Size</span>
+                </div>
+                <div class="inputTooltip">
+                    <select id="text-size">
+                          <option value="10px">10px</option>
+                          <option value="13px">13px</option>
+                          <option value="16px">16px</option>
+                          <option value="18px">18px</option>
+                          <option value="24px" selected>24px</option>
+                          <option value="32px">32px</option>
+                          <option value="48px">48px</option>
+                    </select>
+                    <span class="tooltiptext">Font Size</span>
+                </div>
+                <div class="inputTooltip">
+                    <input type="color" class="colorInput" id="circle-color" value="#00ff88" />
+                    <span class="tooltiptext">Node Color</span>
+                </div>
+                <div class="inputTooltip">
+                    <input type="text" id="node-x" style="width: 30px;" placeholder="X" value=0 />
+                    <span class="tooltiptext">Node X Position</span>
+                </div>
+                 <div class="inputTooltip">
+                    <input type="text" id="node-y" style="width: 30px;" placeholder="Y" value=0 />
+                    <span class="tooltiptext">Node Y Position</span>
+                </div>
             </div>
         </div>
-
-        <button id="add-circle">
-            <span class="tooltiptext">Add Node</span>
-            <img src="MindmapData/MindmapAddNode.svg" alt="Icon"  width="20" height="20" />
-        </button>
-        <button id="add-comment">
-            <span class="tooltiptext">Add Comments</span>
-            <img src="MindmapData/MindmapAddComment.svg" alt="Icon"  width="20" height="20" />
-        </button>
+        <div id="footer-section-connection" class="footer-section" style="display:none">
+            <div class="inputTooltip">
+                <select id="linetypeinput" aria-label="Select visibility option">
+                    <option value="solid" selected>Solid</option>
+                    <option value="dashed">Dashed</option>
+                    <option value="dotted">Dotted</option>
+                </select>
+                <span class="tooltiptext">Select Connection Type</span>
+            </div>
+            <div class="inputTooltip">
+                <input type="text" id="line-input" placeholder="Connection Label" />
+                <span class="tooltiptext">Enter Connection Label Text</span>
+            </div>
+            <div class="inputTooltip">
+                    <input type="color" class="colorInput" id="linecolorinput" value="#00ff00" />
+                    <span class="tooltiptext">Connection Color</span>
+            </div>
+        </div>
+        <div id="footer-actions">
+            <button id="add-circle">
+                <span class="tooltiptext">Add Node</span>
+                <img src="MindmapData/MindmapAddNode.svg" alt="Icon"  width="20" height="20" />
+            </button>
+            <button id="add-comment">
+                <span class="tooltiptext">Add Comments</span>
+                <img src="MindmapData/MindmapAddComment.svg" alt="Icon"  width="20" height="20" />
+            </button>
+        </div>
     </footer>
+
+    <div id="stats-modal" class="modal-overlay" style="display:none">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Mindmap Statistics</h3>
+                <button id="close-stats-modal"><img src="MindmapData/MindmapClose.svg" alt="Close" width="20" height="20" /></button>
+            </div>
+            <div id="stats-body"></div>
+        </div>
+    </div>
 
     <script src="app_script.js"></script>
 </body>
